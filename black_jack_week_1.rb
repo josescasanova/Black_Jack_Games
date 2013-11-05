@@ -41,7 +41,6 @@ dealertotal = calculate_cards(dealer_hand)
 playertotal = calculate_cards(player_hand)
 
 
-puts "The dealer's hand is #{dealer_hand[0]} and #{dealer_hand[1]}, for a total of #{dealertotal}"
 puts "Your hand is #{player_hand[0]} and #{player_hand[1]}, for a total of #{playertotal}"
 puts ""
 
@@ -49,6 +48,8 @@ if playertotal == 21
   puts "Congratulations! You win!"
   exit
 end
+
+# Player turn
 
 while playertotal < 21
   puts "Do you want to hit or stay? Press, 1, for hit and, 2, for stay."
@@ -80,33 +81,19 @@ while playertotal < 21
 
 end
 
+# Dealer turn
+
 if dealertotal == 21
   puts "The dealer wins!"
   exit
 end
 
-while dealertotal < 21
-  puts "Does the dealer want hit or stay? Press, 1, for hit and, 2, for stay."
-  hit_or_stay = gets.chomp
+while dealertotal < 17
+  dealer_hand << deck.pop  
+  dealertotal = calculate_cards(dealer_hand)
+  puts "The dealer's hand is #{dealer_hand}, for a total of #{dealertotal}"
+  break if dealertotal >= 17
 
-  if hit_or_stay == "2"
-    puts "The dealer has decided to stay."
-    calculate_cards(dealer_hand)
-    puts "The dealer's hand is #{dealer_hand}, for a total of #{dealertotal}"
-    break
-  end
-  
-  if !hit_or_stay.include?("1" || "2") 
-    puts "Please press either 1 or 2"
-    next
-  end
-
-  if hit_or_stay == "1"
-    dealer_hand << deck.pop
-    puts "Your hand is #{dealer_hand}"
-    dealertotal = calculate_cards(dealer_hand)
-    puts "Your total is, #{dealertotal}"
-  end
 
   if dealertotal == 21
     puts "The dealer wins!"
@@ -117,7 +104,11 @@ end
 
 if playertotal > dealertotal
   puts "The player wins!"
-else
+elsif
   dealertotal > playertotal
   puts "The dealer wins."
+else
+  playertotal == dealertotal
+  puts "It's a tie"
+    
 end
